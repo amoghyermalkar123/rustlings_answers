@@ -20,8 +20,6 @@
 //
 // No hints this time!
 
-// I AM NOT DONE
-
 pub enum Command {
     Uppercase,
     Trim,
@@ -31,13 +29,25 @@ pub enum Command {
 mod my_module {
     use super::Command;
 
-    pub fn transformer(input: Vec<(&str, Command)>) -> Vec<&str> {
-        let mut output: Vec<&str> = vec![];
+    pub fn transformer(input: Vec<(&str, Command)>) -> Vec<String> {
+        let mut output: Vec<String> = vec![];
         for (string, command) in input.iter() {
             match command {
-                Command::Uppercase => {}
-                Command::Trim => {}
-                Command::Append(num) => {}
+                Command::Uppercase => {
+                    let temp = string.to_uppercase();
+                    output.push(temp);
+                }
+                Command::Trim => {
+                    output.push(string.trim().to_owned());
+                }
+                Command::Append(num) => {
+                    let r: u64 = *num as u64;
+                    let mut s = string.to_string();
+                    for _ in 0..r {
+                        s.push_str("bar");
+                    }
+                    output.push(s);
+                }
             }
         }
         output
