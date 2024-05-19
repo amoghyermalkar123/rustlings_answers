@@ -9,8 +9,6 @@
 // Execute `rustlings hint errors6` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
 use std::num::ParseIntError;
 
 // This is a custom error type that we will be using in `parse_pos_nonzero()`.
@@ -33,9 +31,18 @@ fn parse_pos_nonzero(s: &str) -> Result<PositiveNonzeroInteger, ParsePosNonzeroE
     // TODO: change this to return an appropriate error instead of panicking
     // when `parse()` returns an error.
     let x = s.parse();
+    println!("DEBUG 1 {:?}", x);
     match x {
+        Ok(v) if v == 0 => Err(ParsePosNonzeroError::from_creation(CreationError::Zero)),
         Ok(v) => Ok(PositiveNonzeroInteger(v)),
-        Err(_) => PositiveNonzeroInteger::new(-1).map_err(ParsePosNonzeroError::from_parseint),
+        Err(e) if *e.kind() == std::num::IntErrorKind::InvalidDigit => {
+            let t = s.parse::<i32>();
+            match t {
+                Ok(x) => Err(ParsePosNonzeroError::from_creation(CreationError::Negative)),
+                Err(ee) => Err(ParsePosNonzeroError::from_parseint(ee)),
+            }
+        }
+        Err(e) => Err(ParsePosNonzeroError::from_parseint(e)),
     }
 }
 
@@ -67,6 +74,7 @@ mod test {
     #[test]
     fn test_parse_error() {
         // We can't construct a ParseIntError, so we have to pattern match.
+        println!("DEBUG {:?}", parse_pos_nonzero("not a number"));
         assert!(matches!(
             parse_pos_nonzero("not a number"),
             Err(ParsePosNonzeroError::ParseInt(_))
