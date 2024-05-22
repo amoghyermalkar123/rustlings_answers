@@ -6,26 +6,26 @@
 // Execute `rustlings hint iterators2` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
 // Step 1.
 // Complete the `capitalize_first` function.
 // "hello" -> "Hello"
 pub fn capitalize_first(input: &str) -> String {
     let mut c = input.chars();
     let mut full = String::from("");
-    match c.next() {
-        None => {
-            String::new();
-            ()
-        }
-        Some(first) if full.len() == 0 => {
-            full.push_str(&first.to_string().to_uppercase());
-        }
-        Some(other) => {
-            full.push_str(other.to_string().as_str());
-        }
-    };
+    loop {
+        match c.next() {
+            None => {
+                String::new();
+                break;
+            }
+            Some(first) if full.len() == 0 => {
+                full.push_str(&first.to_string().to_uppercase());
+            }
+            Some(other) => {
+                full.push_str(other.to_string().as_str());
+            }
+        };
+    }
     full
 }
 
