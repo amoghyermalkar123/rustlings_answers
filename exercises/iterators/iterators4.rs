@@ -15,17 +15,11 @@ pub fn factorial(num: u64) -> u64 {
     // For an extra challenge, don't use:
     // - recursion
     // Execute `rustlings hint iterators4` for hints.
-    let res = 1;
-    let r = [1..num].into_iter().map(|n| {
-        if n != num {
-            let t = n + 1;
-            res = n * t;
-        } else {
-            res = res * n;
-        }
-        n
-    });
-    res
+    match num {
+        0 => 1,
+        1 => 1,
+        _ => factorial(num - 1) * num,
+    }
 }
 
 #[cfg(test)]
